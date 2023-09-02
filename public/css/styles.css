@@ -24,6 +24,29 @@
     color: #333;
 }
 
+.div-buttonFoto {
+    margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+
+
+}
+
+.div-inputBuscar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+}
+
+.button-container {
+    margin: 10px;
+
+}
+
 .btn-primary {
     background-color: #3490dc;
     color: #fff;

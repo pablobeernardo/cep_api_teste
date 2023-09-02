@@ -1,4 +1,6 @@
 @extends('layouts.app')
+<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 
 @section('content')
 <div class="container">
@@ -13,26 +15,26 @@
                         {{ session('status') }}
                     </div>
                     @endif
-
-                    <h2 class="text-center">Perfil de Usuário</h2>
-
+                    
+                    
+                    <h2 class="text-center">Olá, {{ Auth::user()->name }}!</h2>
                     <div class="user-profile">
                         <div class="profile-picture">
-                            <img src="{{ asset('https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png') }}" alt="Perfil do Usuário">
+                            <img src="{{ asset('caminho_da_imagem_padrao') }}" alt="" id="profile-image">
+                        </div>
+                        <div class="div-buttonFoto">
+                        <form class="text-center" id="upload-form" enctype="multipart/form-data">
+                            <input type="file" name="foto" id="foto-input">
+                        </form>
                         </div>
 
-                        <form class="form-horizontal" id="cep-form">                           
-                            <div class="form-group">
+                        <form class="form-horizontal" id="cep-form">
+                                <div class="div-inputBuscar">
                                 <label for="cep" class="col-md-4 control-label">Digite seu CEP:</label>
-                                <div class="col-md-6">
                                     <input type="text" class="form-control" id="cep" name="cep" placeholder="Digite seu CEP">
+                                    <button type="submit" class=" button-container btn btn-primary">Buscar Endereço</button>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">Buscar Endereço</button>
-                                </div>
-                            </div>
+
                             <div class="form-group">
                                 <label for="logradouro" class="col-md-4 control-label">Rua:</label>
                                 <div class="col-md-6">
@@ -62,35 +64,31 @@
                             </div>
                         </form>
 
-                        <!-- Script JavaScript -->
                         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                         <script>
                             $(document).ready(function() {
                                 $('#cep-form').submit(function(event) {
-                                    event.preventDefault(); // Impede o envio do formulário padrão
+                                    event.preventDefault(); 
 
                                     var cep = $('#cep').val();
 
                                     $.ajax({
-                                        url: "https://viacep.com.br/ws/" + cep + "/json", // Substitua pela URL real da API de CEP.
+                                        url: "https://viacep.com.br/ws/" + cep + "/json", 
                                         type: "GET",
                                         dataType: "json",
                                         success: function(data) {
-                                            // Atualize os campos de endereço com os dados do CEP
                                             $('#logradouro').val(data.logradouro);
                                             $('#bairro').val(data.bairro);
                                             $('#cidade').val(data.localidade);
                                             $('#estado').val(data.uf);
                                         },
                                         error: function() {
-                                            // Trate erros, por exemplo, exibindo uma mensagem ao usuário.
                                             alert("Erro ao buscar o CEP. Verifique se o CEP é válido.");
                                         }
                                     });
                                 });
                             });
                         </script>
-                        <!-- Fim do Script JavaScript -->
                     </div>
                 </div>
             </div>
