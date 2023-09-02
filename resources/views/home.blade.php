@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('content')
@@ -22,7 +21,7 @@
                             <img src="{{ asset('https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png') }}" alt="Perfil do Usuário">
                         </div>
 
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" id="cep-form">                           
                             <div class="form-group">
                                 <label for="cep" class="col-md-4 control-label">Digite seu CEP:</label>
                                 <div class="col-md-6">
@@ -63,22 +62,39 @@
                             </div>
                         </form>
 
-                        <form class="form-horizontal" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="profile_picture" class="col-md-4 control-label">Foto de Perfil:</label>
-                                <div class="col-md-6">
-                                    <input type="file" class="form-control-file" id="profile_picture" name="profile_picture">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">Upload de Foto de Perfil</button>
-                                </div>
-                            </div>
-                        </form>
+                        <!-- Script JavaScript -->
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script>
+                            $(document).ready(function() {
+                                $('#cep-form').submit(function(event) {
+                                    event.preventDefault(); // Impede o envio do formulário padrão
+
+                                    var cep = $('#cep').val();
+
+                                    $.ajax({
+                                        url: "https://viacep.com.br/ws/" + cep + "/json", // Substitua pela URL real da API de CEP.
+                                        type: "GET",
+                                        dataType: "json",
+                                        success: function(data) {
+                                            // Atualize os campos de endereço com os dados do CEP
+                                            $('#logradouro').val(data.logradouro);
+                                            $('#bairro').val(data.bairro);
+                                            $('#cidade').val(data.localidade);
+                                            $('#estado').val(data.uf);
+                                        },
+                                        error: function() {
+                                            // Trate erros, por exemplo, exibindo uma mensagem ao usuário.
+                                            alert("Erro ao buscar o CEP. Verifique se o CEP é válido.");
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                        <!-- Fim do Script JavaScript -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @endsection
+</div>
+@endsection
