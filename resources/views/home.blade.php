@@ -70,8 +70,9 @@
                                     <input type="text" class="form-control" id="estado" name="estado" readonly>
                                 </div>
                             </div>
-
+                            <div class="divButtonSalvar">
                             <button class=" button-container btn btn-primary">Salvar</button>
+                            </div>
                         </form>
                     </div>
                 </div>

@@ -99,6 +99,12 @@ body {
 
 }
 
+.divButtonSalvar{
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+}
+
 .btn-primary {
     background-color: #3490dc;
     color: #fff;
