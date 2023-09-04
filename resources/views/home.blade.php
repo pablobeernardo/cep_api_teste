@@ -20,7 +20,7 @@
                     <div class="user-profile">
                         <div class="profile-picture">
                             @if(session('user') && session('user')->image)
-                            <img src="{{ url('storage/users/'.session('user')->image) }}" alt="" class="img-responsive">
+                            <img id="profile-image" src="{{ url('storage/users/'.session('user')->image) }}" alt="" class="img-responsive">
                             @else
                             <img src="{{ url('storage/users/default.png') }}" alt="" class="img-responsive">
                             @endif
@@ -33,7 +33,7 @@
 
                             <!-- Input para escolher uma imagem -->
                             <div class="div-buttonFoto">
-                                <input type="file" name="image">
+                                <input type="file" name="image" id="image-input">
                             </div>
 
                             <!-- Campos para exibir informações de endereço -->
@@ -84,6 +84,19 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
+        $('#image-input').change(function() {
+            var input = this;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#profile-image').attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+
         $('#buscarEndereco').click(function() {
             var cep = $('#cep').val();
 
