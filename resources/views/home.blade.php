@@ -15,25 +15,33 @@
                         {{ session('status') }}
                     </div>
                     @endif
-                    
-                    
+
                     <h2 class="text-center">Olá, {{ Auth::user()->name }}!</h2>
                     <div class="user-profile">
                         <div class="profile-picture">
-                            <img src="{{ asset('caminho_da_imagem_padrao') }}" alt="" id="profile-image">
+                            @if(session('user') && session('user')->image)
+                            <img src="{{ url('storage/users/'.session('user')->image) }}" alt="" class="img-responsive">
+                            @else
+                            <img src="{{ url('storage/users/default.png') }}" alt="" class="img-responsive">
+                            @endif
                         </div>
-                        <div class="div-buttonFoto">
-                        <form class="text-center" id="upload-form" enctype="multipart/form-data">
-                            <input type="file" name="foto" id="foto-input">
-                        </form>
-                        </div>
+                        <form class="form-horizontal" id="user-form" action="{{ route('user.update', Auth::user()->id) }}" method="POST" enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            {{ method_field('PUT') }}
+                            <!-- Usando o método PUT -->
+                            <input type="hidden" name="id" value="{{ Auth::user()->id }}">
 
-                        <form class="form-horizontal" id="cep-form">
-                                <div class="div-inputBuscar">
+                            <!-- Input para escolher uma imagem -->
+                            <div class="div-buttonFoto">
+                                <input type="file" name="image">
+                            </div>
+
+                            <!-- Campos para exibir informações de endereço -->
+                            <div class="div-inputBuscar">
                                 <label for="cep" class="col-md-4 control-label">Digite seu CEP:</label>
-                                    <input type="text" class="form-control" id="cep" name="cep" placeholder="Digite seu CEP">
-                                    <button type="submit" class=" button-container btn btn-primary">Buscar Endereço</button>
-                                </div>
+                                <input type="text" class="form-control" id="cep" name="cep" placeholder="Digite seu CEP">
+                                <button type="button" class="button-container btn btn-primary" id="buscarEndereco">Buscar Endereço</button>
+                            </div>
 
                             <div class="form-group">
                                 <label for="logradouro" class="col-md-4 control-label">Rua:</label>
@@ -62,33 +70,9 @@
                                     <input type="text" class="form-control" id="estado" name="estado" readonly>
                                 </div>
                             </div>
+
+                            <button class=" button-container btn btn-primary">Salvar</button>
                         </form>
-
-                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                        <script>
-                            $(document).ready(function() {
-                                $('#cep-form').submit(function(event) {
-                                    event.preventDefault(); 
-
-                                    var cep = $('#cep').val();
-
-                                    $.ajax({
-                                        url: "https://viacep.com.br/ws/" + cep + "/json", 
-                                        type: "GET",
-                                        dataType: "json",
-                                        success: function(data) {
-                                            $('#logradouro').val(data.logradouro);
-                                            $('#bairro').val(data.bairro);
-                                            $('#cidade').val(data.localidade);
-                                            $('#estado').val(data.uf);
-                                        },
-                                        error: function() {
-                                            alert("Erro ao buscar o CEP. Verifique se o CEP é válido.");
-                                        }
-                                    });
-                                });
-                            });
-                        </script>
                     </div>
                 </div>
             </div>
@@ -96,3 +80,27 @@
     </div>
 </div>
 @endsection
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#buscarEndereco').click(function() {
+            var cep = $('#cep').val();
+
+            $.ajax({
+                url: "https://viacep.com.br/ws/" + cep + "/json",
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    $('#logradouro').val(data.logradouro);
+                    $('#bairro').val(data.bairro);
+                    $('#cidade').val(data.localidade);
+                    $('#estado').val(data.uf);
+                },
+                error: function() {
+                    alert("Erro ao buscar o CEP. Verifique se o CEP é válido.");
+                }
+            });
+        });
+    });
+</script>
