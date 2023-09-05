@@ -13,10 +13,10 @@
                     <h2 class="text-center">Olá, {{ Auth::user()->name }}!</h2>
                     <div class="user-profile">
                         <div class="profile-picture">
-                            @if(isset($user->image))
-                            <img src="{{ url('storage/users/'.$user->image) }}" alt="" class="img-responsive">
+                            @if(isset(Auth::user()->image))
+                            <img id="profile-image" src="{{ url('storage/uploads/'.Auth::user()->image) }}" alt="" class="img-responsive">
                             @else
-                            <img src="{{ url('storage/users/default.png') }}" alt="" class="img-responsive">
+                            <img src="{{ url('storage/uploads/default.png') }}" alt="" class="img-responsive">
                             @endif
                         </div>
                         <div class="div-inputCampo">

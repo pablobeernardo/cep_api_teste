@@ -61,6 +61,12 @@ body {
     margin-bottom: 15px;
 }
 
+.img-responsive {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
 .user-email p {
     text-align: center;
     margin-top: 10px;

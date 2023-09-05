@@ -18,11 +18,11 @@
 
                     <h2 class="text-center">Olá, {{ Auth::user()->name }}!</h2>
                     <div class="user-profile">
-                        <div class="profile-picture">
-                            @if(session('user') && session('user')->image)
-                            <img id="profile-image" src="{{ url('storage/users/'.session('user')->image) }}" alt="" class="img-responsive">
+                    <div class="profile-picture">
+                            @if(isset(Auth::user()->image))
+                            <img id="profile-image" src="{{ url('storage/uploads/'.Auth::user()->image) }}" alt="" class="img-responsive">
                             @else
-                            <img src="{{ url('storage/users/default.png') }}" alt="" class="img-responsive">
+                            <img src="{{ url('storage/uploads/default.png') }}" alt="" class="img-responsive">
                             @endif
                         </div>
                         <form class="form-horizontal" id="user-form" action="{{ route('user.update', Auth::user()->id) }}" method="POST" enctype="multipart/form-data">
@@ -82,7 +82,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('#image-input').change(function() {
+        $('#image-input').on('change', function() {
             var input = this;
             if (input.files && input.files[0]) {
                 var reader = new FileReader();

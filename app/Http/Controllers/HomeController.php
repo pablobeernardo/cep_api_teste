@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 
 class HomeController extends Controller
 {
@@ -36,28 +38,20 @@ class HomeController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            if ($user->image) {
-                Storage::delete($user->image);
-            }
-
             $image = $request->file('image');
+            $extension = $image->getClientOriginalExtension();
+            $name = uniqid(date('HisYmd')) . '.' . $extension;
 
-            $extension = $image->extension();
+            $path = $image->storeAs('uploads', $name, 'public');
 
-            $name = uniqid(date('HisYmd'));
-
-            $nameFile = "{$name}.{$extension}";
-
-            $upload = $image->storeAs('users', $nameFile);
-
-            if (!$upload) {
+            if ($path) {
+                $data['image'] = $name;
+            } else {
                 return redirect()
                     ->back()
                     ->with('error', 'Falha ao fazer upload')
                     ->withInput();
             }
-
-            $data['image'] = $nameFile;
         }
 
         $update = $user->update($data);
@@ -78,10 +72,29 @@ class HomeController extends Controller
             ->withInput();
     }
 
+
+
     public function getDataUser()
     {
         $user = Auth::user();
 
         return view('data-user', ['user' => $user]);
+    }
+
+    public function getImage($filename)
+    {
+        $path = storage_path('app/public/users/' . $filename);
+
+        if (!File::exists($path)) {
+            abort(404);
+        }
+
+        $file = File::get($path);
+        $type = File::mimeType($path);
+
+        $response = Response::make($file, 200);
+        $response->header('Content-Type', $type);
+
+        return $response;
     }
 }
