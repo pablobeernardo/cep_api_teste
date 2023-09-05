@@ -21,6 +21,4 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-//rota para atualizar o usuário
 Route::put('/user/{id}', 'HomeController@updateUser')->name('user.update');

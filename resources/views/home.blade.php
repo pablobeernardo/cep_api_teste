@@ -28,15 +28,12 @@
                         <form class="form-horizontal" id="user-form" action="{{ route('user.update', Auth::user()->id) }}" method="POST" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             {{ method_field('PUT') }}
-                            <!-- Usando o método PUT -->
                             <input type="hidden" name="id" value="{{ Auth::user()->id }}">
 
-                            <!-- Input para escolher uma imagem -->
                             <div class="div-buttonFoto">
                                 <input type="file" name="image" id="image-input">
                             </div>
 
-                            <!-- Campos para exibir informações de endereço -->
                             <div class="div-inputBuscar">
                                 <label for="cep" class="col-md-4 control-label">Digite seu CEP:</label>
                                 <input type="text" class="form-control" id="cep" name="cep" placeholder="Digite seu CEP">
@@ -115,6 +112,31 @@
                     alert("Erro ao buscar o CEP. Verifique se o CEP é válido.");
                 }
             });
+        });
+    });
+
+    $('#user-form').submit(function(event) {
+        event.preventDefault();
+
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: "{{ route('user.update', Auth::user()->id) }}",
+            type: "POST",
+            data: formData,
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (response.success) {
+                    window.location.reload();
+                } else {
+                    alert("Erro ao atualizar o perfil. Verifique os dados e tente novamente.");
+                }
+            },
+            error: function() {
+                alert("Erro ao atualizar o perfil. Tente novamente mais tarde.");
+            }
         });
     });
 </script>
