@@ -68,7 +68,7 @@ class HomeController extends Controller
             session(['user' => $user]);
 
             return redirect()
-                ->route('home')
+                ->route('data.user')
                 ->with('success', 'Dados atualizados com sucesso!');
         }
 
@@ -76,5 +76,12 @@ class HomeController extends Controller
             ->back()
             ->with('error', 'Falha ao atualizar os dados')
             ->withInput();
+    }
+
+    public function getDataUser()
+    {
+        $user = Auth::user();
+
+        return view('data-user', ['user' => $user]);
     }
 }

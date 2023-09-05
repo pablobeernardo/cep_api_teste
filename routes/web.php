@@ -22,3 +22,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::put('/user/{id}', 'HomeController@updateUser')->name('user.update');
+Route::get('/data-user', 'HomeController@getDataUser')->name('data.user');

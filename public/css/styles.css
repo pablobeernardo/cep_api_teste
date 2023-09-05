@@ -105,6 +105,12 @@ body {
     align-items: center;   
 }
 
+.divButtonVoltar{
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+}
+
 .btn-primary {
     background-color: #3490dc;
     color: #fff;
