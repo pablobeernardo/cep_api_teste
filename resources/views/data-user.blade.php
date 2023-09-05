@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="divButtonVoltar">
-                    <a class="button-container btn btn-primary" href="{{ route('home') }}">Voltar</a>
+                    <a class="button-container btn btn-primary" href="{{ route('home') }}">Editar</a>
                 </div>
             </div>
         </div>
